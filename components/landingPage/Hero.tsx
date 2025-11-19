@@ -1,4 +1,4 @@
-import { Button } from '../ui/button'
+import Link from 'next/link'
 
 const Hero = () => {
     return (
@@ -8,9 +8,9 @@ const Hero = () => {
                 Escape to nature. Relax. Recharge. Discover paradise.
             </p>
 
-            <Button className="bg-amber-600 hover:bg-amber-700 text-lg px-6 py-2">
+            <Link href="/booking" className="bg-amber-600 hover:bg-amber-700 rounded-lg text-lg px-6 py-2">
                 Book Now
-            </Button>
+            </Link>
         </section>
     )
 }
