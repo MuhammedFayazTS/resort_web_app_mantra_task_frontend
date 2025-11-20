@@ -1,7 +1,12 @@
 import BookingForm from "@/components/BookingForm"
+import { getAllPackages } from "@/lib/apis";
 import Image from "next/image"
 
+// Booking form is added directly to landing page , this page not needed
+
 async function BookingPage() {
+    const packageDetails = await getAllPackages();
+    const packages = packageDetails?.data ?? [];
     return (
         <main className="min-h-screen flex flex-col lg:flex-row bg-background">
 
@@ -25,7 +30,7 @@ async function BookingPage() {
 
             <div className="w-full lg:w-1/2 flex items-center justify-center py-12 px-6">
                 <div className="w-full max-w-lg">
-                    <BookingForm />
+                    <BookingForm packages={packages} />
                 </div>
             </div>
 

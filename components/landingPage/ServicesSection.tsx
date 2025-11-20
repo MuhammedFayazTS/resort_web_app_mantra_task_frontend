@@ -21,7 +21,7 @@ const services = [
 const ServicesSection = () => {
   return (
     <section className="relative z-10 min-h-screen flex flex-col bg-white text-gray-900 py-16 px-8 flex flex-col items-center">
-      <h2 className="text-3xl font-bold text-center mb-auto">Our Services</h2>
+      <h2 className="text-3xl font-bold text-center mb-10 sm:mb-auto">Our Services</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-6xl text-center  mb-auto">
         {services.map((service, index) => {

@@ -30,6 +30,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { bookingFormSchema } from "@/validators/booking.schema"
 import { createBooking } from "@/lib/apis"
+import { Textarea } from "./ui/textarea"
+import { PackageItem } from "@/types/package.interface"
 
 const initialValues = {
     name: "",
@@ -39,14 +41,15 @@ const initialValues = {
     checkOutDate: "",
     adults: 1,
     children: 0,
-    packageType: "",
+    packageId: "",
     accommodation: false,
     adventureActivities: false,
     wellnessSpa: false,
-    specialRequest: ""
+    specialRequest: "",
+    address: "",
 } satisfies z.infer<typeof bookingFormSchema>
 
-export function BookingForm() {
+export function BookingForm({ packages }: { packages: PackageItem[] | [] }) {
     const [step, setStep] = useState(1)
     const form = useForm<z.infer<typeof bookingFormSchema>>({
         resolver: zodResolver(bookingFormSchema),
@@ -136,6 +139,18 @@ export function BookingForm() {
                                         </Field>
                                     )}
                                 />
+
+                                <Controller
+                                    name="address"
+                                    control={form.control}
+                                    render={({ field, fieldState }) => (
+                                        <Field data-invalid={fieldState.invalid}>
+                                            <FieldLabel>Address</FieldLabel>
+                                            <Textarea {...field} placeholder="123 Street, City, Country" />
+                                            {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                                        </Field>
+                                    )}
+                                />
                             </>
                         )}
 
@@ -143,19 +158,21 @@ export function BookingForm() {
                         {step === 2 && (
                             <>
                                 <Controller
-                                    name="packageType"
+                                    name="packageId"
                                     control={form.control}
                                     render={({ field, fieldState }) => (
                                         <Field data-invalid={fieldState.invalid}>
-                                            <FieldLabel>Package Type</FieldLabel>
+                                            <FieldLabel>Package</FieldLabel>
                                             <Select onValueChange={field.onChange} value={field.value}>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select package type" />
+                                                    <SelectValue placeholder="Select package" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="deluxe">Deluxe Room</SelectItem>
-                                                    <SelectItem value="suite">Suite</SelectItem>
-                                                    <SelectItem value="family">Family Room</SelectItem>
+                                                    {
+                                                        packages?.map((pkg) => (
+                                                            <SelectItem key={pkg._id} value={pkg._id}>{pkg.title}</SelectItem>
+                                                        ))
+                                                    }
                                                 </SelectContent>
                                             </Select>
                                             {fieldState.error && <FieldError errors={[fieldState.error]} />}

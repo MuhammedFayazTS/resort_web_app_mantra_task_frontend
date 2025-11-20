@@ -33,7 +33,7 @@ async function AdminPage() {
                         {bookings.map((b) => (
                             <TableRow key={b._id}>
                                 <TableCell>{b.name}</TableCell>
-                                <TableCell>{b.packageType}</TableCell>
+                                <TableCell>{b.packageType.title ?? "N/A"}</TableCell>
                                 <TableCell>{b.checkInDate.toString()}</TableCell>
                                 <TableCell>{b.checkOutDate.toString()}</TableCell>
                                 <TableCell>{b.adults}</TableCell>

@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/landingPage/Hero";
 import BookingFormSection from "@/components/landingPage/BookingFormSection";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="relative min-h-screen bg-background overflow-hidden text-white">
 

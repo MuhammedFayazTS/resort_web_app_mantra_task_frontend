@@ -10,7 +10,10 @@ export interface BookingListItem {
     accommodation: boolean;
     adventureActivities: boolean;
     wellnessSpa: boolean;
-    status: 'Pending' | 'Confirmed' | 'Cancelled';
-    packageType?: string | null | undefined;
+    status: "booked" | "checkedIn" | "checkedOut" | "cancelled";
+    packageType: {
+        packageId: string;
+        title: string;
+    };
     specialRequest?: string | null | undefined;
 }
