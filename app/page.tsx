@@ -5,6 +5,7 @@ import ServicesSection from "@/components/landingPage/ServicesSection";
 import GallerySection from "@/components/landingPage/GallerySection";
 import Footer from "@/components/Footer";
 import Hero from "@/components/landingPage/Hero";
+import BookingFormSection from "@/components/landingPage/BookingFormSection";
 
 export default function Home() {
   return (
@@ -29,6 +30,8 @@ export default function Home() {
       <GallerySection />
 
       <StatsSection />
+
+      <BookingFormSection />
 
       <Footer />
 

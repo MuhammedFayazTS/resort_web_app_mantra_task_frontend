@@ -11,7 +11,7 @@ export const bookingFormSchema = z.object({
     adults: z.coerce.number<number>().min(1, "At least 1 adult required"),
     children: z.coerce.number<number>().min(0),
 
-    roomType: z.string().min(1, "Select a room type"),
+    packageType: z.string().min(1, "Select a room type"),
 
     accommodation: z.boolean().optional(),
     adventureActivities: z.boolean().optional(),

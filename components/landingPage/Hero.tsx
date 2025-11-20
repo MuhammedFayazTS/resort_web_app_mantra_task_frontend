@@ -8,7 +8,7 @@ const Hero = () => {
                 Escape to nature. Relax. Recharge. Discover paradise.
             </p>
 
-            <Link href="/booking" className="bg-amber-600 hover:bg-amber-700 rounded-lg text-lg px-6 py-2">
+            <Link href="#booking-form-section" className="bg-amber-600 hover:bg-amber-700 rounded-lg text-lg px-6 py-2">
                 Book Now
             </Link>
         </section>
