@@ -1,5 +1,5 @@
 import { getAllPackages, getAllServices } from '@/lib/apis';
-import BookingForm from '../BookingForm'
+import BookingForm from '../forms/BookingForm'
 
 const BookingFormSection = async () => {
     const packageDetails = await getAllPackages();

@@ -22,17 +22,14 @@ import {
     FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import {
-    InputGroup,
-    InputGroupTextarea,
-} from "@/components/ui/input-group"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { bookingFormSchema } from "@/validators/booking.schema"
 import { createBooking } from "@/lib/apis"
-import { Textarea } from "./ui/textarea"
 import { PackageItem } from "@/types/package.interface"
 import { ServiceItem } from "@/types/service.interface"
+import CommonTextInput from "../core/CommonTextInput"
+import CommonTextArea from "../core/CommonTextArea"
+import CommonSelect from "../core/CommonSelect"
+import CommonCheckBox from "../core/CommonCheckBox"
 
 const initialValues = {
     name: "",
@@ -103,79 +100,47 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
 
                         {step === 1 && (
                             <>
-                                <Controller
+                                <CommonTextInput
                                     name="name"
+                                    label="Name"
+                                    placeholder="John Doe"
                                     control={form.control}
-                                    render={({ field, fieldState }) => (
-                                        <Field data-invalid={fieldState.invalid}>
-                                            <FieldLabel>Name</FieldLabel>
-                                            <Input {...field} placeholder="John Doe" />
-                                            {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                        </Field>
-                                    )}
                                 />
-
-                                <Controller
+                                <CommonTextInput
                                     name="email"
+                                    label="Email"
+                                    placeholder="john@example.com"
                                     control={form.control}
-                                    render={({ field, fieldState }) => (
-                                        <Field data-invalid={fieldState.invalid}>
-                                            <FieldLabel>Email</FieldLabel>
-                                            <Input {...field} placeholder="john@example.com" />
-                                            {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                        </Field>
-                                    )}
                                 />
-
-                                <Controller
+                                <CommonTextInput
                                     name="phone"
+                                    label="Phone"
+                                    placeholder="+91 9999999999"
                                     control={form.control}
-                                    render={({ field, fieldState }) => (
-                                        <Field data-invalid={fieldState.invalid}>
-                                            <FieldLabel>Phone</FieldLabel>
-                                            <Input {...field} placeholder="+91 9999999999" />
-                                            {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                        </Field>
-                                    )}
                                 />
-
-                                <Controller
+                                <CommonTextArea
                                     name="address"
+                                    label="Address"
+                                    placeholder="123 Street, City, Country"
                                     control={form.control}
-                                    render={({ field, fieldState }) => (
-                                        <Field data-invalid={fieldState.invalid}>
-                                            <FieldLabel>Address</FieldLabel>
-                                            <Textarea {...field} placeholder="123 Street, City, Country" />
-                                            {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                        </Field>
-                                    )}
                                 />
                             </>
                         )}
 
                         {step === 2 && (
                             <>
-                                <Controller
+                                <CommonSelect
                                     name="packageId"
+                                    label="Package"
                                     control={form.control}
-                                    render={({ field, fieldState }) => (
-                                        <Field data-invalid={fieldState.invalid}>
-                                            <FieldLabel>Package</FieldLabel>
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select package" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {
-                                                        packages?.map((pkg) => (
-                                                            <SelectItem key={pkg._id} value={pkg._id}>{pkg.title}</SelectItem>
-                                                        ))
-                                                    }
-                                                </SelectContent>
-                                            </Select>
-                                            {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                        </Field>
-                                    )}
+                                    placeholder="Select package"
+                                    options={packages?.map((pkg) => ({
+                                        ...pkg,
+                                        label: pkg.title,
+                                        value: pkg._id
+                                    }
+                                    ))}
+
                                 />
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -205,28 +170,19 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <Controller
+                                    <CommonTextInput
                                         name="adults"
+                                        label="Adults"
+                                        type="number"
+                                        min={1}
                                         control={form.control}
-                                        render={({ field, fieldState }) => (
-                                            <Field data-invalid={fieldState.invalid}>
-                                                <FieldLabel>Adults</FieldLabel>
-                                                <Input {...field} type="number" min={1} />
-                                                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                            </Field>
-                                        )}
                                     />
-
-                                    <Controller
+                                    <CommonTextInput
                                         name="children"
+                                        label="Children"
+                                        type="number"
+                                        min={0}
                                         control={form.control}
-                                        render={({ field, fieldState }) => (
-                                            <Field data-invalid={fieldState.invalid}>
-                                                <FieldLabel>Children</FieldLabel>
-                                                <Input {...field} type="number" min={0} />
-                                                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                            </Field>
-                                        )}
                                     />
                                 </div>
                             </>
@@ -237,49 +193,21 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
                             <>
                                 <FieldLabel>Additional Services</FieldLabel>
                                 <div className="flex flex-col gap-3">
-
-                                    {services.map(service => (
-                                        <Controller
+                                    {services?.map(service => (
+                                        <CommonCheckBox
                                             key={service._id}
                                             name="serviceIds"
                                             control={form.control}
-                                            render={({ field }) => {
-                                                const isChecked = field.value?.includes(service._id);
-
-                                                const toggle = () => {
-                                                    if (isChecked) {
-                                                        field.onChange(field.value?.filter(id => id !== service._id));
-                                                    } else {
-                                                        field.onChange([...(field.value ?? []), service._id]);
-                                                    }
-                                                };
-
-                                                return (
-                                                    <label className="flex items-center gap-2">
-                                                        <Checkbox checked={isChecked} onCheckedChange={toggle} />
-                                                        {service.title}
-                                                    </label>
-                                                );
-                                            }}
+                                            option={{ value: service._id, label: service.title }}
                                         />
                                     ))}
                                 </div>
 
-                                <Controller
+                                <CommonTextArea
                                     name="specialRequest"
+                                    label="Special Request"
+                                    placeholder="Anything specific you need?"
                                     control={form.control}
-                                    render={({ field }) => (
-                                        <Field>
-                                            <FieldLabel>Special Request</FieldLabel>
-                                            <InputGroup>
-                                                <InputGroupTextarea
-                                                    {...field}
-                                                    rows={4}
-                                                    placeholder="Anything specific you need?"
-                                                />
-                                            </InputGroup>
-                                        </Field>
-                                    )}
                                 />
                             </>
                         )}
