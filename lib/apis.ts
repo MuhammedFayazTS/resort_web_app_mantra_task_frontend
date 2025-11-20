@@ -1,5 +1,6 @@
 import { BookingListItem } from '@/types/booking.interface';
 import { PackageItem } from '@/types/package.interface';
+import { ServiceItem } from '@/types/service.interface';
 import { bookingFormSchema } from '@/validators/booking.schema';
 import axios from 'axios';
 import z from 'zod';
@@ -37,6 +38,22 @@ export const getAllPackages = async (): Promise<{ data: PackageItem[]; count: nu
         return response.data;
     } catch (error) {
         console.error("Error fetching packages:", error);
+        return null;
+    }
+}
+
+export const getAllServices = async (): Promise<{ data: ServiceItem[]; count: number } | null> => {
+    try {
+        const response = await axios(`${process.env.NEXT_PUBLIC_API_BASE_URL}/services`);
+        if (!response.data) {
+            return {
+                data: [],
+                count: 0
+            }
+        }
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching services:", error);
         return null;
     }
 }

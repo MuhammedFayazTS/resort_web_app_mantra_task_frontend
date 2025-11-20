@@ -32,6 +32,7 @@ import { bookingFormSchema } from "@/validators/booking.schema"
 import { createBooking } from "@/lib/apis"
 import { Textarea } from "./ui/textarea"
 import { PackageItem } from "@/types/package.interface"
+import { ServiceItem } from "@/types/service.interface"
 
 const initialValues = {
     name: "",
@@ -42,14 +43,12 @@ const initialValues = {
     adults: 1,
     children: 0,
     packageId: "",
-    accommodation: false,
-    adventureActivities: false,
-    wellnessSpa: false,
     specialRequest: "",
     address: "",
+    serviceIds: []
 } satisfies z.infer<typeof bookingFormSchema>
 
-export function BookingForm({ packages }: { packages: PackageItem[] | [] }) {
+export function BookingForm({ packages, services }: { packages: PackageItem[] | [], services: ServiceItem[] | [] }) {
     const [step, setStep] = useState(1)
     const form = useForm<z.infer<typeof bookingFormSchema>>({
         resolver: zodResolver(bookingFormSchema),
@@ -81,14 +80,14 @@ export function BookingForm({ packages }: { packages: PackageItem[] | [] }) {
     }
 
     return (
-        <Card className="w-full max-w-xl shadow-none border-none p-0 bg-transparent">
+        <Card className="w-full max-w-xl border-none shadow-none sm:shadow-md bg-transparent sm:bg-white">
             <CardHeader>
                 <CardTitle>Resort Booking</CardTitle>
                 <CardDescription>Reserve your stay with all necessary details.</CardDescription>
                 <div className="flex items-center justify-center gap-4 mt-4">
                     {
                         [1, 2, 3].map(stepNumber => (
-                            <div key={stepNumber} className={`h-2 w-16 rounded-full ${stepNumber === step ? "bg-amber-600" : "bg-gray-300"}`} />
+                            <div key={stepNumber} className={`h-2 w-16 rounded-full ${stepNumber === step ? "bg-amber-600" : "bg-gray-300"} transition-colors duration-500 ease-in-out`} />
                         ))
                     }
                 </div>
@@ -153,7 +152,6 @@ export function BookingForm({ packages }: { packages: PackageItem[] | [] }) {
                                 />
                             </>
                         )}
-
 
                         {step === 2 && (
                             <>
@@ -240,38 +238,31 @@ export function BookingForm({ packages }: { packages: PackageItem[] | [] }) {
                                 <FieldLabel>Additional Services</FieldLabel>
                                 <div className="flex flex-col gap-3">
 
-                                    <Controller
-                                        name="accommodation"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <label className="flex items-center gap-2">
-                                                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                                                Accommodation
-                                            </label>
-                                        )}
-                                    />
+                                    {services.map(service => (
+                                        <Controller
+                                            key={service._id}
+                                            name="serviceIds"
+                                            control={form.control}
+                                            render={({ field }) => {
+                                                const isChecked = field.value?.includes(service._id);
 
-                                    <Controller
-                                        name="adventureActivities"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <label className="flex items-center gap-2">
-                                                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                                                Adventure Activities
-                                            </label>
-                                        )}
-                                    />
+                                                const toggle = () => {
+                                                    if (isChecked) {
+                                                        field.onChange(field.value?.filter(id => id !== service._id));
+                                                    } else {
+                                                        field.onChange([...(field.value ?? []), service._id]);
+                                                    }
+                                                };
 
-                                    <Controller
-                                        name="wellnessSpa"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <label className="flex items-center gap-2">
-                                                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                                                Wellness & Spa
-                                            </label>
-                                        )}
-                                    />
+                                                return (
+                                                    <label className="flex items-center gap-2">
+                                                        <Checkbox checked={isChecked} onCheckedChange={toggle} />
+                                                        {service.title}
+                                                    </label>
+                                                );
+                                            }}
+                                        />
+                                    ))}
                                 </div>
 
                                 <Controller
@@ -301,37 +292,39 @@ export function BookingForm({ packages }: { packages: PackageItem[] | [] }) {
             <CardFooter>
                 <Field orientation="horizontal" className="w-full justify-between">
 
-                    <Button type="button" variant="outline" onClick={onReset}>
+                    <Button type="button" variant="destructive" className="bg-red-500 hover:bg-red-600" onClick={onReset}>
                         Reset
                     </Button>
 
-                    {step > 1 && (
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={(e) => onClickStepButton(e, step - 1)}
-                        >
-                            Back
-                        </Button>
-                    )}
+                    <div className="flex gap-5">
+                        {step > 1 && (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={(e) => onClickStepButton(e, step - 1)}
+                            >
+                                Back
+                            </Button>
+                        )}
 
-                    {step < 3 ? (
-                        <Button
-                            type="button"
-                            className="bg-amber-600 hover:bg-amber-700"
-                            onClick={(e) => onClickStepButton(e, step + 1)}
-                        >
-                            Next
-                        </Button>
-                    ) : (
-                        <Button
-                            type="submit"
-                            form="booking-form"
-                            className="bg-amber-600 hover:bg-amber-700"
-                        >
-                            Submit
-                        </Button>
-                    )}
+                        {step < 3 ? (
+                            <Button
+                                type="button"
+                                className="bg-amber-600 hover:bg-amber-700"
+                                onClick={(e) => onClickStepButton(e, step + 1)}
+                            >
+                                Next
+                            </Button>
+                        ) : (
+                            <Button
+                                type="submit"
+                                form="booking-form"
+                                className="bg-green-600 hover:bg-green-700"
+                            >
+                                Submit
+                            </Button>
+                        )}
+                    </div>
                 </Field>
             </CardFooter>
 

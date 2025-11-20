@@ -13,10 +13,7 @@ export const bookingFormSchema = z.object({
     children: z.number().min(0),
 
     packageId: z.string().min(1, "Select a room type"),
-
-    accommodation: z.boolean().optional(),
-    adventureActivities: z.boolean().optional(),
-    wellnessSpa: z.boolean().optional(),
+    serviceIds: z.array(z.string()).optional(),
 
     specialRequest: z.string().optional()
 })
