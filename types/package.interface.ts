@@ -5,5 +5,6 @@ export interface PackageItem {
     price?: {
         adult: number;
         child: number;
-    }
+    },
+    services?: string[]
 }

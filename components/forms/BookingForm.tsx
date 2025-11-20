@@ -76,6 +76,12 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
         handleStepChange(targetStep);
     }
 
+    const onChangeCallbackForPackage = (value: string) => {
+        const selectedOption = packages?.find((pkg) => pkg._id === value)
+        if (!selectedOption || !selectedOption?.services) return
+        form.setValue('serviceIds', selectedOption.services)
+    }
+
     return (
         <Card className="w-full max-w-xl border-none shadow-none sm:shadow-md bg-transparent sm:bg-white">
             <CardHeader>
@@ -134,6 +140,7 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
                                     label="Package"
                                     control={form.control}
                                     placeholder="Select package"
+                                    onChangeCallback={onChangeCallbackForPackage}
                                     options={packages?.map((pkg) => ({
                                         ...pkg,
                                         label: pkg.title,
