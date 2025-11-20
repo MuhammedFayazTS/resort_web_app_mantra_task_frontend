@@ -29,6 +29,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { bookingFormSchema } from "@/validators/booking.schema"
+import { createBooking } from "@/lib/apis"
 
 const initialValues = {
     name: "",
@@ -51,9 +52,17 @@ export function BookingForm() {
         defaultValues: initialValues
     })
 
-    function onSubmit(data: z.infer<typeof bookingFormSchema>) {
-        console.table(data)
-        toast("Booking submitted!")
+    async function onSubmit(data: z.infer<typeof bookingFormSchema>) {
+        const response = await createBooking(data);
+        if (response.data && response.data && response.data.success) {
+            const messagqe = response.data.data?.message || "Booking created successfully";
+            toast.success(messagqe);
+        }
+        onReset();
+    }
+
+    const onReset = () => {
+        form.reset(initialValues);
     }
 
     return (
@@ -229,7 +238,7 @@ export function BookingForm() {
 
             <CardFooter>
                 <Field orientation="horizontal">
-                    <Button type="button" variant="outline" onClick={() => form.reset()}>
+                    <Button type="button" variant="outline" onClick={onReset}>
                         Reset
                     </Button>
                     <Button type="submit" form="booking-form">
