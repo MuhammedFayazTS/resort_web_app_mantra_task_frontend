@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 const GallerySection = () => {
     return (
-        <section className="relative min-h-screen z-10 bg-gray-100 text-gray-900 py-16 px-8">
+        <section className="relative min-h-screen z-10 bg-white text-gray-900 py-16 px-8">
             <h2 className="text-3xl font-bold text-center mb-10">Gallery</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 group">
@@ -14,7 +14,7 @@ const GallerySection = () => {
                         "
                     >
                         <Image
-                            src="/landing_page_bg.webp"
+                            src={`/gallery/${num}.webp`}
                             alt={`Gallery Image ${num}`}
                             fill
                             className="object-cover rounded group-hover:opacity-40 hover:!opacity-100

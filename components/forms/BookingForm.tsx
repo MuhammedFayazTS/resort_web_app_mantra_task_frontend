@@ -83,7 +83,7 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
     }
 
     return (
-        <Card className="w-full max-w-xl border-none shadow-none sm:shadow-md bg-transparent sm:bg-white">
+        <Card className="w-full max-w-xl border-none shadow-none  bg-transparent ">
             <CardHeader>
                 <CardTitle>Resort Booking</CardTitle>
                 <CardDescription>Reserve your stay with all necessary details.</CardDescription>

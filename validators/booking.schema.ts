@@ -17,3 +17,11 @@ export const bookingFormSchema = z.object({
 
     specialRequest: z.string().optional()
 })
+
+export const bookingValidationSchemaForCheckIn = z.object({
+    actualCheckInDate: z.string().min(1, "Actual Check In Date is required").pipe(z.coerce.date()),
+});
+
+export const bookingValidationSchemaForCheckedOut = z.object({
+    actualCheckOutDate: z.string().min(1, "Actual Checked Out Date is required").pipe(z.coerce.date()),
+});

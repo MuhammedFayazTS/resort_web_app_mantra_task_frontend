@@ -7,7 +7,7 @@ const BookingFormSection = async () => {
     const serviceDetails = await getAllServices();
     const services = serviceDetails?.data ?? [];
     return (
-        <section id='booking-form-section' className="relative min-h-screen z-20 w-full  flex items-center justify-center bg-gray-50 py-12 px-6">
+        <section id='booking-form-section' className="relative min-h-screen z-20 w-full flex items-center justify-center bg-white py-12 px-6">
             <BookingForm packages={packages} services={services} />
         </section>
     )

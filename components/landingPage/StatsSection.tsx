@@ -2,7 +2,7 @@ import { Users, Star, CalendarCheck } from "lucide-react";
 
 export default function StatsSection() {
   return (
-    <section className="relative h-screen sm:h-fit z-10 bg-white text-gray-900 py-16 px-8 flex flex-col justify-center">
+    <section className="relative h-screen sm:h-fit z-10 bg-gray-50 text-gray-900 py-16 px-8 flex flex-col justify-center">
       <h2 className="text-3xl font-bold text-center mb-10">Our Impact</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">

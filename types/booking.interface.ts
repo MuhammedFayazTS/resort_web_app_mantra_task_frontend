@@ -5,6 +5,8 @@ export interface BookingListItem {
     phone: string;
     checkInDate: Date;
     checkOutDate: Date;
+    actualCheckInDate: Date;
+    actualCheckOutDate: Date;
     adults: number;
     children: number;
     accommodation: boolean;
@@ -16,4 +18,11 @@ export interface BookingListItem {
         title: string;
     };
     specialRequest?: string | null | undefined;
+}
+
+export enum BOOKING_STATUS {
+    BOOKED = "booked",
+    CANCELLED = "cancelled",
+    CHECKED_IN = "checkedIn",
+    CHECKED_OUT = "checkedOut",
 }
