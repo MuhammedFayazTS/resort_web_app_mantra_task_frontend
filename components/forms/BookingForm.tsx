@@ -17,11 +17,9 @@ import {
 } from "@/components/ui/card"
 import {
     Field,
-    FieldError,
     FieldGroup,
     FieldLabel,
 } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import { bookingFormSchema } from "@/validators/booking.schema"
 import { createBooking } from "@/lib/apis"
 import { PackageItem } from "@/types/package.interface"
@@ -30,13 +28,16 @@ import CommonTextInput from "../core/CommonTextInput"
 import CommonTextArea from "../core/CommonTextArea"
 import CommonSelect from "../core/CommonSelect"
 import CommonCheckBox from "../core/CommonCheckBox"
+import CommonDatePicker from "../core/CommonDatePicker"
 
 const initialValues = {
     name: "",
     email: "",
     phone: "",
-    checkInDate: "",
-    checkOutDate: "",
+    checkInDate: new Date(),
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    checkOutDate: undefined,
     adults: 1,
     children: 0,
     packageId: "",
@@ -51,6 +52,8 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
         resolver: zodResolver(bookingFormSchema),
         defaultValues: initialValues
     })
+
+    const checkInDate = form.watch("checkInDate");
 
     async function onSubmit(data: z.infer<typeof bookingFormSchema>) {
         const response = await createBooking(data);
@@ -89,7 +92,7 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
                 <CardDescription>Reserve your stay with all necessary details.</CardDescription>
                 <div className="flex items-center justify-center gap-4 mt-4">
                     {
-                        [1, 2, 3].map(stepNumber => (
+                        [1, 2, 3].map((stepNumber) => (
                             <div key={stepNumber} className={`h-2 w-16 rounded-full ${stepNumber === step ? "bg-amber-600" : "bg-gray-300"} transition-colors duration-500 ease-in-out`} />
                         ))
                     }
@@ -151,28 +154,16 @@ export function BookingForm({ packages, services }: { packages: PackageItem[] | 
                                 />
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <Controller
+                                    <CommonDatePicker
                                         name="checkInDate"
                                         control={form.control}
-                                        render={({ field, fieldState }) => (
-                                            <Field data-invalid={fieldState.invalid}>
-                                                <FieldLabel>Check-In Date</FieldLabel>
-                                                <Input {...field} type="date" />
-                                                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                            </Field>
-                                        )}
+                                        label="Check-In Date"
                                     />
-
-                                    <Controller
+                                    <CommonDatePicker
                                         name="checkOutDate"
                                         control={form.control}
-                                        render={({ field, fieldState }) => (
-                                            <Field data-invalid={fieldState.invalid}>
-                                                <FieldLabel>Check-Out Date</FieldLabel>
-                                                <Input {...field} type="date" />
-                                                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                                            </Field>
-                                        )}
+                                        label="Check-Out Date"
+                                        disableBefore={checkInDate}
                                     />
                                 </div>
 

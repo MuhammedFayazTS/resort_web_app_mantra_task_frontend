@@ -6,8 +6,12 @@ export const bookingFormSchema = z.object({
     phone: z.string().min(7, "Phone number is too short"),
     address: z.string().min(10, "Address is too short"),
 
-    checkInDate: z.string().min(1, "Check-in date is required"),
-    checkOutDate: z.string().min(1, "Check-out date is required"),
+    checkInDate: z.date({
+        error: "Check In Date is required.",
+    }),
+    checkOutDate: z.date({
+        error: "Check Out Date is required.",
+    }),
 
     adults: z.number().min(1, "At least 1 adult required"),
     children: z.number().min(0),
@@ -19,9 +23,13 @@ export const bookingFormSchema = z.object({
 })
 
 export const bookingValidationSchemaForCheckIn = z.object({
-    actualCheckInDate: z.string().min(1, "Actual Check In Date is required").pipe(z.coerce.date()),
+    actualCheckInDate: z.date({
+        error: "Actual Check In Date is required.",
+    }),
 });
 
 export const bookingValidationSchemaForCheckedOut = z.object({
-    actualCheckOutDate: z.string().min(1, "Actual Checked Out Date is required").pipe(z.coerce.date()),
+    actualCheckOutDate: z.date({
+        error: "Actual Checked Out Date is required.",
+    }),
 });
