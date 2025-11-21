@@ -69,30 +69,30 @@ export const getAllServices = async (): Promise<{ data: ServiceItem[]; count: nu
 
 export const addCheckIn = async (bookingId: string, checkedInPayload: z.infer<typeof bookingValidationSchemaForCheckIn>) => {
     try {
-        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/check-in/${bookingId}`, checkedInPayload);
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings/check-in/${bookingId}`, checkedInPayload);
         return response;
     } catch (error: unknown) {
         console.error(error)
-        return null;
+        throw error;
     }
 }
 
 export const addCheckOut = async (bookingId: string, checkedOutPayload: z.infer<typeof bookingValidationSchemaForCheckedOut>) => {
     try {
-        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/check-out/${bookingId}`, checkedOutPayload);
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings/check-out/${bookingId}`, checkedOutPayload);
         return response;
     } catch (error: unknown) {
         console.error(error)
-        return null;
+        throw error;
     }
 }
 
 export const cancelBooking = async (bookingId: string) => {
     try {
-        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/cancel/${bookingId}`);
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings/cancel/${bookingId}`);
         return response;
     } catch (error: unknown) {
         console.error(error)
-        return null;
+        throw error;
     }
 }
