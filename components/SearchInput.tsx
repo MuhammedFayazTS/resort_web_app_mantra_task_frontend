@@ -16,7 +16,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ count }) => {
 
     const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target?.value;
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(searchParams);
         if (value) {
             params.set('search', value);
         } else {

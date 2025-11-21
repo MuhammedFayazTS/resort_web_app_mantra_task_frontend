@@ -13,8 +13,8 @@ import BookingTableActions from './BookingTableActions';
 
 const BookingTables = ({ bookings }: { bookings: BookingListItem[] }) => {
     const statusColumnStyle = {
-        "booked": "bg-green-500 text-white",
-        "checkedIn": "bg-blue-500 text-white",
+        "booked": "bg-blue-500 text-white",
+        "checkedIn": "bg-green-500 text-white",
         "checkedOut": "bg-amber-500 text-white",
         "cancelled": "bg-red-500 text-white",
     }

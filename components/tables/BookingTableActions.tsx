@@ -32,7 +32,7 @@ const BookingTableActions = ({ booking }: { booking: BookingListItem }) => {
     router.refresh()
   }
   return (
-    <TableCell >
+    <TableCell className='flex gap-2'>
       {booking.status === BOOKING_STATUS.BOOKED && (
         <Button
           onClick={() => handleBookingAction(BOOKING_STATUS.BOOKED, booking._id)}
@@ -42,10 +42,10 @@ const BookingTableActions = ({ booking }: { booking: BookingListItem }) => {
       {booking.status === BOOKING_STATUS.CHECKED_IN &&
         <Button
           onClick={() => handleBookingAction(BOOKING_STATUS.CHECKED_IN, booking._id)}
-          className='bg-blue-600 hover:blue-700'>
+          className='bg-amber-600 hover:amber-700'>
           Check-Out
         </Button>}
-      {booking.status === BOOKING_STATUS.CANCELLED &&
+      {booking.status === BOOKING_STATUS.BOOKED &&
         <Button
           onClick={() => handleBookingAction(BOOKING_STATUS.CANCELLED, booking._id)}
           variant={'destructive'}>

@@ -10,12 +10,14 @@ export const createBooking = async (bookingData: z.infer<typeof bookingFormSchem
     return response;
 }
 
-export const getAllBookings = async ({ search }: {
+export const getAllBookings = async ({ search, status }: {
     search?: string
+    status?: string
 }): Promise<{ data: BookingListItem[]; count: number } | null> => {
     try {
         const params = {}
         if (search) Object.assign(params, { search })
+        if (status) Object.assign(params, { status })
         const response = await axios(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings`,
             {
                 params
