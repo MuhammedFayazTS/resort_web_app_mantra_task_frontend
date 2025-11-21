@@ -10,62 +10,65 @@ export const createBooking = async (bookingData: z.infer<typeof bookingFormSchem
     return response;
 }
 
-export const getAllBookings = async ({ search, status }: {
-    search?: string
-    status?: string
-}): Promise<{ data: BookingListItem[]; count: number } | null> => {
+export async function getAllBookings({ search, status }: {
+    search?: string;
+    status?: string;
+}): Promise<{ data: BookingListItem[]; count: number } | null> {
+
+    const query = new URLSearchParams();
+    if (search) query.set("search", search);
+    if (status) query.set("status", status);
+
     try {
-        const params = {}
-        if (search) Object.assign(params, { search })
-        if (status) Object.assign(params, { status })
-        const response = await axios(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings`,
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings?${query.toString()}`,
+            { cache: "no-store" }
+        );
+
+        if (!res.ok) return { data: [], count: 0 };
+
+        return res.json();
+    } catch (err) {
+        console.error("Error fetching bookings:", err);
+        return null;
+    }
+}
+
+
+export async function getAllPackages(): Promise<{ data: PackageItem[]; count: number } | null> {
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/packages`,
             {
-                params
-            });
-        if (!response.data) {
-            return {
-                data: [],
-                count: 0
+                next: { revalidate: 60 },
             }
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching bookings:", error);
+        );
+
+        if (!res.ok) return { data: [], count: 0 };
+        return res.json();
+    } catch (err) {
+        console.error("Error fetching packages:", err);
         return null;
     }
 }
 
-export const getAllPackages = async (): Promise<{ data: PackageItem[]; count: number } | null> => {
+export async function getAllServices(): Promise<{ data: ServiceItem[]; count: number } | null> {
     try {
-        const response = await axios(`${process.env.NEXT_PUBLIC_API_BASE_URL}/packages`);
-        if (!response.data) {
-            return {
-                data: [],
-                count: 0
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+            {
+                next: { revalidate: 60 },
             }
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching packages:", error);
+        );
+
+        if (!res.ok) return { data: [], count: 0 };
+        return res.json();
+    } catch (err) {
+        console.error("Error fetching services:", err);
         return null;
     }
 }
 
-export const getAllServices = async (): Promise<{ data: ServiceItem[]; count: number } | null> => {
-    try {
-        const response = await axios(`${process.env.NEXT_PUBLIC_API_BASE_URL}/services`);
-        if (!response.data) {
-            return {
-                data: [],
-                count: 0
-            }
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching services:", error);
-        return null;
-    }
-}
 
 export const addCheckIn = async (bookingId: string, checkedInPayload: z.infer<typeof bookingValidationSchemaForCheckIn>) => {
     try {
